@@ -91,8 +91,10 @@ function renderStats() {
   const ratedMovies = movies.filter(m => m.rating > 0);
   const avgRating = ratedMovies.reduce((a, m) => a + m.rating, 0) / (ratedMovies.length || 1);
   const top5 = movies.filter(m => m.rating === 5).length;
+  const watchedCount = movies.filter(m => m.watched).length;
   document.getElementById('statsBar').innerHTML = `
         <div class="stat-pill"><i class="fa-solid fa-film" style="color:var(--accent)"></i> Tổng: <strong>${movies.length}</strong> phim</div>
+        <div class="stat-pill"><i class="fa-solid fa-eye" style="color:#22c55e"></i> Đã xem: <strong>${watchedCount}</strong> phim</div>
         <div class="stat-pill"><i class="fa-solid fa-star" style="color:var(--gold)"></i> TB: <strong>${avgRating.toFixed(1)}</strong> / 5</div>
         <div class="stat-pill"><i class="fa-solid fa-trophy" style="color:var(--gold)"></i> 5 sao: <strong>${top5}</strong> phim</div>
     `;
@@ -270,11 +272,26 @@ function saveMovie() {
 }
 
 function deleteMovie(id) {
-  if (!confirm('Xóa phim này khỏi danh sách?')) return;
+  const m = movies.find(x => x.id === id);
+  if (!m) return;
+  const overlay = document.getElementById('confirmModal');
+  document.getElementById('confirmMovieName').textContent = `"${m.name}"`;
+  overlay.classList.add('show');
+  overlay._pendingId = id;
+}
+
+function confirmDelete() {
+  const overlay = document.getElementById('confirmModal');
+  const id = overlay._pendingId;
   movies = movies.filter(m => m.id !== id);
+  overlay.classList.remove('show');
   closeModal('detailModal');
   toast('Đã xóa phim 🗑️');
   render();
+}
+
+function cancelDelete() {
+  document.getElementById('confirmModal').classList.remove('show');
 }
 
 function openDetail(id) {
