@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kho Phim Cá Nhân</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link href="./img/logo.png" rel="icon" type="image/x-icon" />
+    <meta http-equiv="Content-Security-Policy" content="img-src * data: blob:;">
+</head>
+
+<body>
+    <nav>
+        <div class="nav-inner">
+            <a class="logo" href="#"><i class="fa-solid fa-clapperboard"></i>Kho Phim Cá Nhân</a>
+            <div class="nav-right">
+                <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Đổi giao diện">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                </button>
+                <button class="add-btn" onclick="openAddModal()">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Thêm phim</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="search-bar">
+        <div class="search-wrap">
+            <i class="fa-solid fa-search search-icon"></i>
+            <input type="text" id="searchInput" placeholder="Tìm kiếm phim..." oninput="filterMovies()">
+        </div>
+    </div>
+
+    <div class="stats-wrap" id="statsBar"></div>
+
+    <div class="cats-wrap">
+        <div class="cats" id="catTabs"></div>
+    </div>
+
+    <div class="grid-wrap">
+        <div id="sectionContainer"></div>
+    </div>
+
+    <div class="toast-wrap" id="toastWrap"></div>
+
+    <div class="modal-overlay" id="addModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Thêm phim mới</div>
+                <button class="close-btn" onclick="closeModal('addModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Tên phim *</label>
+                <input type="text" class="form-control-custom" id="f_name" placeholder="Nhập tên phim...">
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+                <div class="form-group">
+                    <label class="form-label">Năm</label>
+                    <input type="number" class="form-control-custom" id="f_year" placeholder="2024" min="1900"
+                        max="2030">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Danh mục</label>
+                    <div id="f_cat_wrap" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Đánh giá</label>
+                <div class="star-rating" id="starRating">
+                    <button class="star-btn" onclick="setRating(1)">★</button>
+                    <button class="star-btn" onclick="setRating(2)">★</button>
+                    <button class="star-btn" onclick="setRating(3)">★</button>
+                    <button class="star-btn" onclick="setRating(4)">★</button>
+                    <button class="star-btn" onclick="setRating(5)">★</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Link poster (URL ảnh)</label>
+                <input type="text" class="form-control-custom" id="f_poster" placeholder="https://...">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Ghi chú / Cảm nhận</label>
+                <textarea class="form-control-custom" id="f_note" rows="3"
+                    placeholder="Viết cảm nhận về phim..."></textarea>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal('addModal')">Hủy</button>
+                <button class="btn-save" onclick="saveMovie()">Lưu phim</button>
+            </div>
+        </div>
+    </div>
+
+    <footer style="text-align:center; padding: 20px; font-size: 13px; color: var(--text3);">
+        Made with ❤️ by <strong style="color: var(--text2);">QuyCo</strong>
+    </footer>
+
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <div class="modal-title">Chi tiết phim</div>
+                <button class="close-btn" onclick="closeModal('detailModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="detailContent"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
